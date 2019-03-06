@@ -1,65 +1,9 @@
-const puppeteer = require('puppeteer');
+const Koa = require('koa');
+const send = require('koa-send');
+const apiRouter = require('./routes/api');
+const app = new Koa();
 
-const browserOptions = {
-  headless: false,
-  ignoreHTTPSErrors: true,
-  args: [
-    "--proxy-server=socks4://94.190.128.22:4145",
-    "--no-sandbox",
-    "--disable-setuid-sandbox"
-  ]
-};
+app.use(apiRouter.routes());
+app.use(async (ctx) => await send(ctx, 'index.html', { root: __dirname + '/client' }));
 
-const URLs = [
-];
-
-(async () => {
-  await getProxy();
-  const browser = await puppeteer.launch(browserOptions);
-
-  for (let i = 0; i < URLs.length; i++) {
-    console.log('Загружаем ', URLs[i]);
-    await newPage(browser, URLs[i], `site_${i}`);
-    console.log('Закрываем ', URLs[i]);
-  }
-
-  await browser.close();
-})();
-
-async function autoScroll(page) {
-  await page.evaluate(async () => {
-    await new Promise((resolve, reject) => {
-      let totalHeight = 0;
-      const distance = 20;
-      const docHeight = document.body.scrollHeight;
-      const timer = setInterval(() => {
-        window.scrollBy(0, distance);
-        totalHeight += distance;
-        if (totalHeight >= docHeight) {
-          clearInterval(timer);
-          resolve();
-        }
-      }, 200);
-    });
-  });
-}
-
-async function getProxy() {}
-
-async function newPage(browser, url, photoSiteName) {
-  const page = await browser.newPage();
-  await page.goto(url, {waitUntil: 'domcontentloaded'});
-  await page.setViewport({
-    width: 1200,
-    height: 800
-  });
-
-  await autoScroll(page);
-
-  await page.screenshot({
-    path: `${photoSiteName}.png`,
-    fullPage: true
-  });
-
-  await page.close();
-}
+app.listen(8080, () => console.log('Server is running!'));
