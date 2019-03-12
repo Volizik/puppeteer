@@ -7,16 +7,16 @@
             <v-container py-0>
               <v-layout wrap>
                 <v-flex xs12 md12 >
-                  <v-text-field label="URL страницы" class="purple-input" />
+                  <v-text-field label="URL страницы" class="purple-input" v-model="url" />
                 </v-flex>
                 <v-flex xs6 md2 >
-                  <v-text-field class="purple-input" label="Просмотры" type="number" />
+                  <v-text-field class="purple-input" label="Просмотры" type="number" v-model="views" />
                 </v-flex>
                 <v-flex xs6 md2 >
-                  <v-text-field class="purple-input" label="Досмотры" type="number" />
+                  <v-text-field class="purple-input" label="Досмотры" type="number" v-model="scroll" />
                 </v-flex>
                 <v-flex xs12 text-xs-right>
-                  <v-btn class="mx-0 font-weight-light" color="success">Добавить сайт</v-btn>
+                  <v-btn class="mx-0 font-weight-light" color="success" @click="addSiteToTable">Добавить сайт</v-btn>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -25,7 +25,7 @@
       </v-flex>
       <v-flex md12>
         <material-card color="green" title="Список" text="Here is a subtitle for this table">
-          <v-data-table :headers="headers" :items="items" hide-actions>
+          <v-data-table :headers="headers" :items="sitesList" hide-actions>
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text-success text--darken-3" v-text="header.text"></span>
             </template>
@@ -35,7 +35,8 @@
               <td>{{ item.url }}</td>
               <td>{{ item.views }}</td>
               <td>{{ item.scroll }}</td>
-              <td class="text-xs-right">{{ item.status }}</td>
+              <td>{{ item.status }}</td>
+              <td class="text-xs-right"><v-btn flat small color="error"><v-icon>mdi-delete</v-icon></v-btn></td>
             </template>
           </v-data-table>
         </material-card>
@@ -45,6 +46,8 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex'
+
   export default {
     data: () => ({
       headers: [
@@ -76,20 +79,34 @@
         {
           sortable: false,
           text: 'Статус',
-          value: 'status',
+          value: 'status'
+        },
+        {
+          sortable: false,
+          text: '',
+          value: 'delete',
           align: 'right'
         }
       ],
-      items: [
-        {
-          logo: 'https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png',
-          name: 'Google',
-          url: 'www.google.com',
-          views: '10',
-          scroll: '20',
-          status: 'Выполнено'
-        }
-      ]
-    })
+      url: '',
+      views: 0,
+      scroll: 0
+    }),
+    computed: {
+      ...mapGetters('sites', ['sitesList']),
+    },
+    methods: {
+      ...mapActions('sites', ['addSite']),
+      addSiteToTable() {
+        console.log(this.url)
+        console.log(this.views)
+        console.log(this.scroll)
+        this.addSite({
+          url: this.url,
+          views: this.views,
+          scroll: this.scroll,
+        })
+      }
+    }
   }
 </script>

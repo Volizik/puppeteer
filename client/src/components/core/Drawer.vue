@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer id="app-drawer" v-model="inputValue" app dark floating persistent mobile-break-point="991" width="260">
+  <v-navigation-drawer id="app-drawer" app dark floating persistent mobile-break-point="991" width="260">
     <v-img :src="image" height="100%">
       <v-layout class="fill-height" tag="v-list" column>
         <v-list-tile avatar>
@@ -27,19 +27,6 @@
             v-text="link.text"
           />
         </v-list-tile>
-        <v-list-tile
-          disabled
-          active-class="primary"
-          class="v-list-item v-list__tile--buy"
-          to="/upgrade"
-        >
-          <v-list-tile-action>
-            <v-icon>mdi-package-up</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title class="font-weight-light">
-            Upgrade To PRO
-          </v-list-tile-title>
-        </v-list-tile>
       </v-layout>
     </v-img>
   </v-navigation-drawer>
@@ -47,10 +34,7 @@
 
 <script>
 // Utilities
-import {
-  mapMutations,
-  mapState
-} from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   data: () => ({
@@ -60,74 +44,24 @@ export default {
         to: '/sites-list',
         icon: 'mdi-clipboard-outline',
         text: 'Список сайтов'
-      },
-      {
-        to: '/dashboard',
-        icon: 'mdi-view-dashboard',
-        text: 'Dashboard'
-      },
-      {
-        to: '/user-profile',
-        icon: 'mdi-account',
-        text: 'User Profile'
-      },
-      {
-        to: '/table-list',
-        icon: 'mdi-clipboard-outline',
-        text: 'Table List'
-      },
-      {
-        to: '/typography',
-        icon: 'mdi-format-font',
-        text: 'Typography'
-      },
-      {
-        to: '/icons',
-        icon: 'mdi-chart-bubble',
-        text: 'Icons'
-      },
-      {
-        to: '/maps',
-        icon: 'mdi-map-marker',
-        text: 'Maps'
-      },
-      {
-        to: '/notifications',
-        icon: 'mdi-bell',
-        text: 'Notifications'
       }
     ],
-    responsive: false
+    responsive: false,
+    color: 'green',
+    image: 'https://sites.google.com/site/prirodanasevseegooglgfgf/_/rsrc/1463456237313/home/priroda_gory_nebo_ozero_oblaka_81150_1920x1080.jpg'
   }),
   computed: {
-    ...mapState('app', ['image', 'color']),
-    inputValue: {
-      get () {
-        return this.$store.state.app.drawer
-      },
-      set (val) {
-        this.setDrawer(val)
-      }
-    },
-    items () {
-      return this.$t('Layout.View.items')
-    }
   },
   mounted () {
-    this.onResponsiveInverted()
-    window.addEventListener('resize', this.onResponsiveInverted)
+    this.onResponsiveInverted();
+    window.addEventListener('resize', this.onResponsiveInverted);
   },
   beforeDestroy () {
-    window.removeEventListener('resize', this.onResponsiveInverted)
+    window.removeEventListener('resize', this.onResponsiveInverted);
   },
   methods: {
-    ...mapMutations('app', ['setDrawer', 'toggleDrawer']),
     onResponsiveInverted () {
-      if (window.innerWidth < 991) {
-        this.responsive = true
-      } else {
-        this.responsive = false
-      }
+      this.responsive = window.innerWidth < 991
     }
   }
 }

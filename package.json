@@ -4,20 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index",
-    "serve:client": "npm run serve --prefix client",
-    "build:client": "npm run build --prefix client",
+    "start": "PORT=3001 nodemon index",
+    "client": "npm run serve --fix --prefix client",
+    "client:build": "npm run build --prefix client",
+    "client:vuex-module": "node client/scripts/generate_vuex_module.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "chalk": "^2.4.2",
+    "cheerio": "^1.0.0-rc.2",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
+    "lodash": "^4.17.11",
+    "mysql2": "^1.6.5",
     "nodemon": "^1.18.10",
     "puppeteer": "^1.12.2",
+    "sequelize": "^4.43.0",
     "sniffr": "^1.2.0"
   }
 }

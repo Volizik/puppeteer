@@ -15,7 +15,7 @@ import { sync } from 'vuex-router-sync'
 import App from './App'
 import i18n from '@/i18n'
 import router from '@/router'
-import store from '@/store'
+import store from '@/store/store'
 
 // Sync store with router
 sync(store, router)
@@ -28,4 +28,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
