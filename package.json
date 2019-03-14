@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "PORT=3001 nodemon index",
-    "client": "npm run serve --fix --prefix client",
+    "client": "npm run serve --prefix client",
     "client:build": "npm run build --prefix client",
     "client:vuex-module": "node client/scripts/generate_vuex_module.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,15 +16,20 @@
     "axios": "^0.18.0",
     "chalk": "^2.4.2",
     "cheerio": "^1.0.0-rc.2",
+    "get-website-favicon": "0.0.7",
     "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
     "koa-static": "^5.0.0",
+    "koa2-cors": "^2.0.6",
     "lodash": "^4.17.11",
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.10",
     "puppeteer": "^1.12.2",
     "sequelize": "^4.43.0",
-    "sniffr": "^1.2.0"
+    "sniffr": "^1.2.0",
+    "url-parse": "^1.4.4",
+    "vue-resource": "^1.5.1"
   }
 }

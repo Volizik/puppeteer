@@ -10,7 +10,6 @@ import './plugins'
 
 // Sync router with store
 import { sync } from 'vuex-router-sync'
-
 // Application imports
 import App from './App'
 import i18n from '@/i18n'
@@ -27,5 +26,11 @@ new Vue({
   i18n,
   router,
   store,
+  http: {
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+    }
+  },
   render: h => h(App)
 }).$mount('#app');

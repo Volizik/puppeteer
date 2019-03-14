@@ -98,9 +98,6 @@
     methods: {
       ...mapActions('sites', ['addSite']),
       addSiteToTable() {
-        console.log(this.url)
-        console.log(this.views)
-        console.log(this.scroll)
         this.addSite({
           url: this.url,
           views: this.views,
