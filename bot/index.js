@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const { sites } = require('../db');
 
 const browserOptions = {
     headless: false,
@@ -10,19 +11,14 @@ const browserOptions = {
     ]
 };
 
-const URLs = [
-    'https://tproger.ru',
-    'https://google.com',
-];
-
 (async () => {
     await getProxy();
+    console.log(sites)
     const browser = await puppeteer.launch(browserOptions);
-
-    for (let i = 0; i < URLs.length; i++) {
-        console.log('Загружаем ', URLs[i]);
-        await newPage(browser, URLs[i], `site_${i}`);
-        console.log('Закрываем ', URLs[i]);
+    for (let i = 0; i < sites.length; i++) {
+        console.log('Загружаем ', sites[i].url);
+        await newPage(browser, sites[i].url, `site_${i}`);
+        console.log('Закрываем ', sites[i].url);
     }
 
     await browser.close();
@@ -59,7 +55,7 @@ async function newPage(browser, url, photoSiteName) {
     await autoScroll(page);
 
     await page.screenshot({
-        path: `${photoSiteName}.png`,
+        path: `./bot/site_photos/${photoSiteName}.png`,
         fullPage: true
     });
 

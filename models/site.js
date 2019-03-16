@@ -7,7 +7,7 @@ const Site = db.define('site', {
   logo: {type: STRING},
   siteViews: {type: STRING},
   siteScrolls: {type: STRING},
-  status: {type: STRING}
+  status: {type: STRING, defaultValue: 'in progress'}
 });
 
 module.exports = Site;

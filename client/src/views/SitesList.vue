@@ -25,13 +25,17 @@
       </v-flex>
       <v-flex md12>
         <material-card color="green" title="Список" text="Here is a subtitle for this table">
+          <v-flex xs12>
+            <v-btn class="mx-2 font-weight-light" color="success" @click="startBot">Запустить бота</v-btn>
+            <v-btn class="mx-2 font-weight-light" color="success" @click="stopBot">Остановить бота</v-btn>
+          </v-flex>
           <v-data-table :headers="headers" :items="sitesList" hide-actions>
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text-success text--darken-3" v-text="header.text"></span>
             </template>
             <template slot="items" slot-scope="{ item }">
-              <td><img :src="item.logo" :alt="item.name" height="25" width="25"></td>
-              <td>{{ item.name }}</td>
+              <td><img :src="item.logo" :alt="item.title" height="25" width="25"></td>
+              <td>{{ item.title }}</td>
               <td>{{ item.url }}</td>
               <td>{{ item.views }}</td>
               <td>{{ item.scroll }}</td>
@@ -59,7 +63,7 @@
         {
           sortable: false,
           text: 'Название страницы',
-          value: 'name'
+          value: 'title'
         },
         {
           sortable: false,
@@ -96,7 +100,7 @@
       ...mapGetters('sites', ['sitesList']),
     },
     methods: {
-      ...mapActions('sites', ['addSite']),
+      ...mapActions('sites', ['addSite', 'startBot', 'stopBot', 'getAllSites']),
       addSiteToTable() {
         this.addSite({
           url: this.url,
@@ -104,6 +108,9 @@
           scroll: this.scroll,
         })
       }
+    },
+    created() {
+      this.getAllSites();
     }
   }
 </script>
