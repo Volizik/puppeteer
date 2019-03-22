@@ -40,7 +40,7 @@
               <td>{{ item.views }}</td>
               <td>{{ item.scroll }}</td>
               <td>{{ item.status }}</td>
-              <td class="text-xs-right"><v-btn flat small color="error"><v-icon>mdi-delete</v-icon></v-btn></td>
+              <td class="text-xs-right"><v-btn flat small color="error" @click="deleteSite(item.id)"><v-icon>mdi-delete</v-icon></v-btn></td>
             </template>
           </v-data-table>
         </material-card>
@@ -100,7 +100,7 @@
       ...mapGetters('sites', ['sitesList']),
     },
     methods: {
-      ...mapActions('sites', ['addSite', 'startBot', 'stopBot', 'getAllSites']),
+      ...mapActions('sites', ['addSite', 'deleteSite', 'startBot', 'stopBot', 'getAllSites']),
       addSiteToTable() {
         this.addSite({
           url: this.url,

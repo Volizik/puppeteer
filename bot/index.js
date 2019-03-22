@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const SiteModel = require('../models/site');
 const { sites } = require('../db');
 
 const browserOptions = {

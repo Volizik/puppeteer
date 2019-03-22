@@ -5,7 +5,8 @@ const sitesController = require('../controllers/sites');
 
 router
     .get('/', sitesController.getAll)
-    .post('/add', sitesController.addSite);
+    .post('/add', sitesController.addSite)
+    .delete('/delete', sitesController.delete);
 
 sites.use('/sites', router.routes(), router.allowedMethods());
 

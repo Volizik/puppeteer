@@ -2,11 +2,13 @@ const SiteModel = require('../models/site');
 const db = require('../middlewares/db');
 const getWebsiteFavicon = require('get-website-favicon');
 const {setProtocol, getSiteTitle} = require('../middlewares/webSite');
-const {sites} = require('../db');
-
 
 module.exports.getAll = async (ctx) => {
-  ctx.body = sites;
+  await db.sync()
+    .then(() => SiteModel.findAll())
+    .then(sites => {
+      ctx.body = sites;
+    });
 };
 
 module.exports.addSite = async (ctx) => {
@@ -19,13 +21,20 @@ module.exports.addSite = async (ctx) => {
   const faviconPromise = getWebsiteFavicon(response.url).then(res => response.logo = res.icons.length ? res.icons[0].src : '/favicon.png');
   // Ожидаем ответ от всех промисов, после чего отдаем ответ клиенту, и записываем сайт в базу
   await Promise.all([titlePromise, faviconPromise]).then(async () => {
-    // await db.sync()
-    //     .then(() => SiteModel.create(response))
-    //     .then(site => {
-    //       console.log(site.toJSON());
-      sites.push(response); // TODO: remove this line after db connect
-      ctx.body = response; // change on site
-    //     });
+    await db.sync()
+        .then(() => SiteModel.create(response))
+        .then(site => {
+          ctx.body = site;
+        });
   });
 
+};
+
+module.exports.delete = async (ctx) => {
+  const id = ctx.request.body.id;
+  await db.sync()
+    .then(() => SiteModel.destroy({where: {id}}))
+    .then(() => {
+      ctx.body = '';
+    });
 };

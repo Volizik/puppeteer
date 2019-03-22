@@ -5,8 +5,8 @@ const Site = db.define('site', {
   url: {type: STRING},
   title: {type: STRING},
   logo: {type: STRING},
-  siteViews: {type: STRING},
-  siteScrolls: {type: STRING},
+  views: {type: STRING},
+  scroll: {type: STRING},
   status: {type: STRING, defaultValue: 'in progress'}
 });
 

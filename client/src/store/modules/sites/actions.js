@@ -22,6 +22,17 @@ export default {
             })
             .catch(e => console.log(e))
     },
+    deleteSite: async ({commit}, payload) => {
+        fetch(`${process.env.VUE_APP_API_URL}/sites/delete`, {
+            method: 'DELETE',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({id: payload})
+        }).catch(e => console.log(e));
+        commit('deleteSite', payload);
+    },
     startBot: async () => {
         await fetch(`${process.env.VUE_APP_API_URL}/bot/start`, {
             method: 'POST'
