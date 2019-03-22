@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
-const SiteModel = require('../models/site');
-const { sites } = require('../db');
+// const { sites } = require('../db');
+const sites = require('./middlewares/sites');
 
+let browser;
 const browserOptions = {
     headless: false,
     ignoreHTTPSErrors: true,
@@ -12,18 +13,20 @@ const browserOptions = {
     ]
 };
 
-(async () => {
-    await getProxy();
-    console.log(sites)
-    const browser = await puppeteer.launch(browserOptions);
-    for (let i = 0; i < sites.length; i++) {
-        console.log('Загружаем ', sites[i].url);
-        await newPage(browser, sites[i].url, `site_${i}`);
-        console.log('Закрываем ', sites[i].url);
-    }
+module.exports.run = async () => {
+  const urlsList = await sites.getURLs();
+  browser = await puppeteer.launch(browserOptions);
+  for (let i = 0; i < urlsList.length; i++) {
+    console.log('Загружаем ', urlsList[i].url);
+    await newPage(browser, urlsList[i].url);
+    console.log('Закрываем ', urlsList[i].url);
+  }
+  stop();
+};
 
-    await browser.close();
-})();
+module.exports.stop = async () => {
+  await browser.close();
+};
 
 async function autoScroll(page) {
     await page.evaluate(async () => {
@@ -43,22 +46,13 @@ async function autoScroll(page) {
     });
 }
 
-async function getProxy() {}
-
-async function newPage(browser, url, photoSiteName) {
+async function newPage(browser, url) {
     const page = await browser.newPage();
     await page.goto(url, {waitUntil: 'domcontentloaded'});
     await page.setViewport({
         width: 1200,
         height: 800
     });
-
     await autoScroll(page);
-
-    await page.screenshot({
-        path: `./bot/site_photos/${photoSiteName}.png`,
-        fullPage: true
-    });
-
     await page.close();
 }
